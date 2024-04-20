@@ -10,3 +10,5 @@ aws:
   host: http://localhost.localstack.cloud:4566
   aws_access_key_id: key_id
   aws_secret_access_key: access_key
+jwt:
+  secret: secret-123
