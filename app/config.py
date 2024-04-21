@@ -24,9 +24,11 @@ class Config:
             self.db_password =  db_password if db_password else config['database']['password']
             self.db_database = config['database']['database']
             self.aws_host = config['aws']['host']
+            self.aws_region = config['aws']['region']
             self.aws_key_id = aws_key if aws_key else config['aws']['aws_access_key_id']
             self.aws_access_key = aws_secret if aws_secret else config['aws']['aws_secret_access_key']
             self.jwt_secret =  jwt_secret if jwt_secret else config['jwt']['secret']
+            self.jwt_alg = config['jwt']['alg']
 
     def get_env_var(self, name: str):
        return os.environ[name]

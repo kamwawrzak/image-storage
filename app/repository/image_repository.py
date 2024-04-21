@@ -1,7 +1,10 @@
 from sqlalchemy import create_engine
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm.exc import NoResultFound
 from .models import Image
 from ..config import Config
+from ..exceptions import NotFoundError, RecordAlreadyExistsError
 
 
 
@@ -23,18 +26,18 @@ class ImageRepository:
             session.commit()
             session.refresh(img)
             return img
-        except Exception as e:
-            return e
+        except IntegrityError as e:
+            session.rollback()
+            raise RecordAlreadyExistsError(e)
         finally:
             session.close()
 
     def get_image(self, user_id: str, id: str) -> Image:
         session = self.get_session()
         try:
-            img = session.query(Image).filter_by(user_id=user_id, id=id).one()
-            return img
-        except Exception as e:
-            return e
+            return session.query(Image).filter_by(user_id=user_id, id=id).one()
+        except NoResultFound:
+            raise NotFoundError
         finally:
             session.close()
     

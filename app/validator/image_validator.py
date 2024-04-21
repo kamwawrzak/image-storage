@@ -1,6 +1,7 @@
 from fastapi import UploadFile, HTTPException, status
 import imghdr
 from ..config import Config
+from ..exceptions import ValidationError
 
 
 
@@ -13,11 +14,12 @@ class ImageValidator:
 
     async def validate(self, file: UploadFile):
         if file.size > self.max_size_mb:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="File size exceeded")
+            raise ValidationError("File size exceeded")
         
         if not file.content_type.startswith(self.content_type):
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="File is not image")
+            raise ValidationError("File is not image")
         
         file_contents = await file.read()
         if imghdr.what(None, file_contents) not in self.allowed_extensions:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Unsupported image type")   
+            raise ValidationError("Unsupported image type")
+

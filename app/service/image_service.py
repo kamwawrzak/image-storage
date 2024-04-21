@@ -18,9 +18,7 @@ class ImageService:
         if not self.s3_service.bucket_exists(user_id):
             self.s3_service.create_bucket(user_id)
 
-        result = self.s3_service.upload_image(file.file, user_id, name)
-        if not result:
-            return False
+        self.s3_service.upload_image(file.file, user_id, name)
         
         return self.database.insert_image(user_id, name)
 

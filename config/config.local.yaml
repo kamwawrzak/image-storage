@@ -15,7 +15,9 @@ database:
   database: images_db
 aws:
   host: http://localhost.localstack.cloud:4566
+  region: "us-east-1"
   aws_access_key_id: key_id
   aws_secret_access_key: access_key
 jwt:
   secret: secret-123
+  alg: HS256
