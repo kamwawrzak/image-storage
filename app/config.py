@@ -15,6 +15,8 @@ class Config:
 
         with open(file, 'r') as file:
             config = yaml.safe_load(file)
+            self.max_image_size_mb = config['image_service']['max_image_size_mb']
+            self.allowed_extensions = config['image_service']['allowed_extensions']
             self.server_port = config['server']['port']
             self.db_host = config['database']['host']
             self.db_port = config['database']['port']

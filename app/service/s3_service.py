@@ -4,7 +4,7 @@ from botocore.exceptions import ClientError
 from typing import BinaryIO, List
 from ..config import Config
 
-class S3Uploader:
+class S3Service:
 
     def __init__(self, config: Config):
         self.s3_client = boto3.client(
@@ -38,3 +38,7 @@ class S3Uploader:
     def list_buckets(self) -> List[str]:
         resp = resp = self.s3_client.list_buckets()
         return resp["Buckets"]
+    
+    def bucket_exists(self, bucket: str) -> bool:
+        buckets = self.list_buckets()
+        return True if bucket in buckets else False
