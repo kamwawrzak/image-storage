@@ -4,7 +4,7 @@ from botocore.exceptions import ClientError
 from typing import BinaryIO, List
 from ..config import Config
 
-class S3Uploader:
+class S3Service:
 
     def __init__(self, config: Config):
         self.s3_client = boto3.client(

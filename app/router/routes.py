@@ -21,7 +21,6 @@ class ImageRouter(APIRouter):
         
 
         @self.get("/image/{id}")
-        async def get_image(id: int, user_id: str = Depends(self.auth_service.get_current_user)):
-            img = self.image_service.get_image(id, user_id)
-            key = img.img_name
-            return {"message": 'image %s returned' % key}
+        async def get_image(id: str, user_id: str = Depends(self.auth_service.get_current_user)):
+            img = self.image_service.get_image(user_id, id)
+            return {"image_path": img}
