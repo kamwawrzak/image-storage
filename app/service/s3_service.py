@@ -8,7 +8,6 @@ from ..exceptions import S3ClientError
 class S3Service:
 
     def __init__(self, config: Config):
-        self.region = config.aws_region
         self.s3_client = boto3.client(
             "s3",
             endpoint_url = config.aws_host,

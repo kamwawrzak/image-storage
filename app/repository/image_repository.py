@@ -7,6 +7,7 @@ from ..config import Config
 from ..exceptions import NotFoundError, RecordAlreadyExistsError
 
 
+
 class ImageRepository:
 
     def __init__(self, config: Config):

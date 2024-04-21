@@ -4,6 +4,7 @@ from ..config import Config
 from ..exceptions import ValidationError
 
 
+
 class ImageValidator:
 
     def __init__(self, config: Config):
@@ -21,3 +22,4 @@ class ImageValidator:
         file_contents = await file.read()
         if imghdr.what(None, file_contents) not in self.allowed_extensions:
             raise ValidationError("Unsupported image type")
+
