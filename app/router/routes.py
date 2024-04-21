@@ -9,7 +9,6 @@ class ImageRouter(APIRouter):
 
     def __init__(self, config: Config, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.config = config
         self.image_service = ImageService(config)
         self.auth_service = AuthService(config)
         self.image_validator = ImageValidator(config)
