@@ -1,9 +1,9 @@
 import time
+from fastapi import UploadFile
 from ..repository.models import Image
 from ..repository.image_repository import ImageRepository
 from ..config import Config
 from .s3_service import S3Service
-from typing import BinaryIO
 
 
 class ImageService:
@@ -13,12 +13,12 @@ class ImageService:
         self.s3_service = S3Service(config)
         self.s3_host = config.aws_host
 
-    async def insert_image(self, file: BinaryIO, user_id: str, ext: str) -> Image:
-        name = self.get_image_name(ext)
-        buckets = self.s3_service.list_buckets()
-        if user_id not in buckets:
+    async def insert_image(self, file: UploadFile, user_id: str) -> Image:
+        name = self.get_image_name(file)
+        if not self.s3_service.bucket_exists(user_id):
             self.s3_service.create_bucket(user_id)
-        result = self.s3_service.upload_image(file, user_id, name)
+
+        result = self.s3_service.upload_image(file.file, user_id, name)
         if not result:
             return False
         
@@ -28,8 +28,12 @@ class ImageService:
         img = self.database.get_image(user_id, id)
         return self.get_image_path(img)
     
-    def get_image_name(self, ext: str):
+    def get_image_name(self, file: UploadFile):
+        ext = self.get_extension(file)
         return f'image_{int(time.time())}.{ext}'
+    
+    def get_extension(self, file: UploadFile) -> str:
+        return file.filename.split('.')[-1]
 
     def get_image_path(self, image: Image) -> str:
         return f'{self.s3_host}/{image.user_id}/{image.img_name}'

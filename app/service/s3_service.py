@@ -38,3 +38,7 @@ class S3Service:
     def list_buckets(self) -> List[str]:
         resp = resp = self.s3_client.list_buckets()
         return resp["Buckets"]
+    
+    def bucket_exists(self, bucket: str) -> bool:
+        buckets = self.list_buckets()
+        return True if bucket in buckets else False
