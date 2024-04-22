@@ -1,5 +1,5 @@
 import boto3
-import io
+from logging import Logger
 from botocore.exceptions import ClientError
 from typing import BinaryIO, List
 from ..config import Config
@@ -7,7 +7,8 @@ from ..exceptions import S3ClientError
 
 class S3Service:
 
-    def __init__(self, config: Config):
+    def __init__(self, config: Config, log: Logger):
+        self.log = log
         self.s3_client = boto3.client(
             "s3",
             endpoint_url = config.aws_host,
@@ -18,7 +19,8 @@ class S3Service:
 
     def create_bucket(self, name: str):
         try:
-            self.s3_client.create_bucket(Bucket=name) 
+            self.s3_client.create_bucket(Bucket=name)
+            self.log.debug(f"Bucket '{name}' created")
         except ClientError as e:
             raise S3ClientError(e)
     

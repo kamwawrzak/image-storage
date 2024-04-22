@@ -1,5 +1,6 @@
 from fastapi import APIRouter, File, Request, status, UploadFile
 from fastapi.responses import JSONResponse
+from logging import Logger
 from ..service.image_service import ImageService
 from ..service.auth_service import AuthService
 from ..validator.image_validator import ImageValidator
@@ -9,9 +10,10 @@ from ..exceptions import AuthenticationError, NotFoundError, RecordAlreadyExists
 
 class ImageRouter(APIRouter):
 
-    def __init__(self, config: Config, *args, **kwargs):
+    def __init__(self, config: Config, log: Logger, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.image_service = ImageService(config)
+        self.log = log
+        self.image_service = ImageService(config, log)
         self.auth_service = AuthService(config)
         self.image_validator = ImageValidator(config)
 
@@ -31,17 +33,19 @@ class ImageRouter(APIRouter):
                     content={"errors": e.detail}
                 )
             except AuthenticationError as e:
+                self.log.error(e)
                 return JSONResponse(
                     status_code=status.HTTP_401_UNAUTHORIZED,
                     content={"errors": e.detail}
                 )
             except RecordAlreadyExistsError:
+                self.log.error(e)
                 return JSONResponse(
                     status=status.HTTP_409_CONFLICT,
                     content={"errors": "record already exists"}
                 )
             except S3ClientError as e:
-                print(e)
+                self.log.error(e)
                 return JSONResponse(
                     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                     content={"errors": "unexpected error occurred"}
@@ -58,11 +62,13 @@ class ImageRouter(APIRouter):
                     content={"image_path": img}
                 )
             except AuthenticationError as e:
+                self.log.error(e)
                 return JSONResponse(
                     status_code=status.HTTP_401_UNAUTHORIZED,
                     content={"errors": e.detail}
                 )
             except S3ClientError as e:
+                self.log.error(e)
                 return JSONResponse(
                     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                     content={"errors": "unexpected error occurred"}
