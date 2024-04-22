@@ -6,7 +6,6 @@ from ..exceptions import AuthenticationError
 
 class AuthService:
 
-
     def __init__(self, config: Config):
         self.secret = config.jwt_secret
         self.alg = config.jwt_alg
