@@ -15,7 +15,11 @@ The JWT must include `user_id` value. You can use https://jwt.io for that.
 Set token in env vars: `export JWT=<your token here>`  
 
 * Upload image  
-```curl -X POST http://localhost:8080/v1/image -H "authorization: Bearer $JWT"  -F "file=@<PATH_TO_IMAGE>"```
+```
+curl -X POST http://localhost:8080/v1/image -H "authorization: Bearer $JWT"  -F "file=@<PATH_TO_IMAGE>"
+```
 
 * Get image link  
-```curl http://localhost:8080/v1/image/<IMAGE_ID> -H "authorization: Bearer $JWT"```
+```
+curl http://localhost:8080/v1/image/<IMAGE_ID> -H "authorization: Bearer $JWT"
+```
