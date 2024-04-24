@@ -4,19 +4,11 @@ from app.repository.image_repository import ImageRepository
 from .helpers import generate_example_img
 
 
-class FakeConfig:
-    db_user = ""
-    db_password = ""
-    db_host = ""
-    db_port = 0
-    db_database = "" 
-    db_driver = ""
-
-
 class TestImageRepository(unittest.TestCase):
 
     def setUp(self):
-        self.repository = ImageRepository(FakeConfig(), None)
+        dsn = f"mysql+pymysql://test:test@test:6543/test"
+        self.repository = ImageRepository(None, dsn)
         self.repository.session = MagicMock()
 
     def test_insert_image_success(self):

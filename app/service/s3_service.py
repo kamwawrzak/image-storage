@@ -7,7 +7,7 @@ from ..exceptions import S3ClientError
 
 class S3Service:
 
-    def __init__(self, config: Config, log: Logger):
+    def __init__(self, log: Logger, config: Config):
         self.log = log
         self.s3_client = boto3.client(
             "s3",
@@ -33,7 +33,6 @@ class S3Service:
             raise S3ClientError(e)
         finally:
             file.close()
-
 
     def list_buckets(self) -> List[str]:
         try: 

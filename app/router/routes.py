@@ -10,12 +10,12 @@ from ..exceptions import AuthenticationError, NotFoundError, RecordAlreadyExists
 
 class ImageRouter(APIRouter):
 
-    def __init__(self, config: Config, log: Logger, *args, **kwargs):
+    def __init__(self, log: Logger, validator: ImageValidator, imgSvc: ImageService, auth: AuthService,  *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.log = log
-        self.image_service = ImageService(config, log)
-        self.auth_service = AuthService(config)
-        self.image_validator = ImageValidator(config)
+        self.image_service = imgSvc
+        self.auth_service = auth
+        self.image_validator = validator
 
         @self.post("/image", )
         async def upload(req: Request, file: UploadFile = File(...)):
