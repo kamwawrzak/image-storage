@@ -14,3 +14,11 @@ update-deps:
 setup-venv:
 	python3 -m venv venv
 	venv/bin/activate
+
+.PHONY: test-coverage
+test-coverage:
+	coverage run -m unittest discover
+
+.PHONY: run-tests
+run-tests:
+	python -m unittest discover -v
