@@ -8,17 +8,16 @@ from ..config import Config
 from ..exceptions import NotFoundError, RecordAlreadyExistsError
 
 
-
 class ImageRepository:
 
     def __init__(self, config: Config, log: Logger):
         db_url = self.get_dsn(config, 'mysql+pymysql')
         self.log = log
         self.engine = create_engine(db_url)
-        self.SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
+        self.session = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
 
     def get_session(self):
-        return self.SessionLocal()
+        return self.session()
     
     def insert_image(self, user_id: str, name: str) -> Image:
         session = self.get_session()
