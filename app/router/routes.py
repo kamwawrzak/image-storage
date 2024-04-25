@@ -10,7 +10,13 @@ from ..exceptions import AuthenticationError, NotFoundError, RecordAlreadyExists
 
 class ImageRouter(APIRouter):
 
-    def __init__(self, log: Logger, validator: ImageValidator, imgSvc: ImageService, auth: AuthService,  *args, **kwargs):
+    def __init__(self, 
+            log: Logger, 
+            auth: AuthService, 
+            validator: ImageValidator, 
+            imgSvc: ImageService, 
+            *args, **kwargs
+    ):
         super().__init__(*args, **kwargs)
         self.log = log
         self.image_service = imgSvc

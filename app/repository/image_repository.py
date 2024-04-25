@@ -4,7 +4,6 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.exc import NoResultFound
 from .models import Image
-from ..config import Config
 from ..exceptions import NotFoundError, RecordAlreadyExistsError
 
 
@@ -41,5 +40,3 @@ class ImageRepository:
             raise NotFoundError
         finally:
             session.close()
-
-    

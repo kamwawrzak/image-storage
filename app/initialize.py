@@ -11,11 +11,12 @@ from app.config import Config
 def initialize(log: Logger, config: Config) -> ImageRouter:
     dsn = get_dsn(config, 'mysql+pymysql')
     repository = ImageRepository(log, dsn)
-    auth_service = AuthService(config)
     s3_service = S3Service(log, config)
-    img_service = ImageService(repository, s3_service, config.aws_host)
+    auth_service = AuthService(config)
     validator = ImageValidator(config)
-    return ImageRouter(log, validator, img_service, auth_service)
+    img_service = ImageService(repository, s3_service, config.aws_host)
+    
+    return ImageRouter(log, auth_service, validator, img_service)
 
 def get_dsn(config: Config, driver: str) -> str:
         user = config.db_user

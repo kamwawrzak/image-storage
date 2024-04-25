@@ -10,8 +10,6 @@ from app.initialize import initialize
 if __name__ == "__main__":
     config = Config()
     log = get_logger(config)
-
-
     router = initialize(log, config)
     app = FastAPI()
     app.include_router(router, prefix="/v1")
