@@ -1,6 +1,5 @@
 import time
 from fastapi import UploadFile
-from logging import Logger
 from ..repository.models import Image
 from ..repository.image_repository import ImageRepository
 from ..config import Config
@@ -9,11 +8,10 @@ from .s3_service import S3Service
 
 class ImageService:
 
-    def __init__(self, config: Config, log: Logger):
-        self.log = log
-        self.database = ImageRepository(config, log)
-        self.s3_service = S3Service(config, log)
-        self.s3_host = config.aws_host
+    def __init__(self, repository: ImageRepository, s3: S3Service, s3_host: str):
+        self.s3_host = s3_host
+        self.database = repository
+        self.s3_service = s3
 
     async def insert_image(self, file: UploadFile, user_id: str) -> Image:
         name = self.get_image_name(file)
@@ -21,8 +19,7 @@ class ImageService:
             self.s3_service.create_bucket(user_id)
 
         self.s3_service.upload_image(file.file, user_id, name)
-        self.log.debug(f"Upload image '{name}' to bucket '{user_id}'")
-
+        
         return self.database.insert_image(user_id, name)
 
     def get_image(self, user_id: str, id: str) -> str:

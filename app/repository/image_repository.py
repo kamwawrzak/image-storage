@@ -4,16 +4,14 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.exc import NoResultFound
 from .models import Image
-from ..config import Config
 from ..exceptions import NotFoundError, RecordAlreadyExistsError
 
 
 class ImageRepository:
 
-    def __init__(self, config: Config, log: Logger):
-        db_url = self.get_dsn(config, 'mysql+pymysql')
+    def __init__(self, log: Logger, dsn: str):
         self.log = log
-        self.engine = create_engine(db_url)
+        self.engine = create_engine(dsn)
         self.session = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
 
     def get_session(self):
@@ -42,11 +40,3 @@ class ImageRepository:
             raise NotFoundError
         finally:
             session.close()
-
-    def get_dsn(self, config: Config, driver: str) -> str:
-        user = config.db_user
-        password = config.db_password
-        host = config.db_host
-        port = config.db_port
-        database = config.db_database
-        return f"{driver}://{user}:{password}@{host}:{port}/{database}"
