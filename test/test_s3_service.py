@@ -1,4 +1,5 @@
 import unittest
+from io import BytesIO 
 from unittest.mock import MagicMock
 from .fake_config import FakeConfig
 from app.service.s3_service import S3Service
@@ -33,6 +34,7 @@ class TestS3Service(unittest.TestCase):
 
         # assert
         self.assertEqual(actual, expected)
+        self.s3_service.s3_client.list_buckets.assert_called_once()
     
     def test_bucket_exists(self):
         # arrange
@@ -45,3 +47,19 @@ class TestS3Service(unittest.TestCase):
 
         # assert
         self.assertTrue(actual)
+        self.s3_service.s3_client.list_buckets.assert_called_once()
+    
+    def test_upload_image(self):
+        # arrange
+        bucket_name = "bucket-123"
+        file_name = "image-123.jpg"   
+        file_contents = b"This is an example file."
+        mock_file = BytesIO(file_contents)
+
+        # act
+        result = self.s3_service.upload_image(mock_file, bucket_name, file_name)
+
+        # assert
+        self.assertIsNone(result)
+        self.s3_service.s3_client.upload_fileobj.assert_called_with(mock_file, bucket_name, file_name)
+        self.assertTrue(mock_file.closed)
