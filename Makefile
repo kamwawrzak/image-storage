@@ -19,6 +19,10 @@ setup-venv:
 test-coverage:
 	coverage run -m unittest discover
 
+.PHONY: test-coverage-html
+test-coverage-html: test-coverage
+	coverage html
+
 .PHONY: run-tests
 run-tests:
 	python -m unittest discover -v
