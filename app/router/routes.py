@@ -4,7 +4,6 @@ from logging import Logger
 from ..service.image_service import ImageService
 from ..service.auth_service import AuthService
 from ..validator.image_validator import ImageValidator
-from ..config import Config
 from ..exceptions import AuthenticationError, NotFoundError, RecordAlreadyExistsError, S3ClientError, ValidationError
 
 
@@ -28,7 +27,7 @@ class ImageRouter(APIRouter):
             try:
                 user_id = self.auth_service.get_current_user(req)
                 await self.image_validator.validate(file)
-                img = await self.image_service.insert_image(file, user_id)
+                img = self.image_service.insert_image(file, user_id)
                 return JSONResponse(
                     status_code=status.HTTP_201_CREATED,
                     content={"image_id": img.id}

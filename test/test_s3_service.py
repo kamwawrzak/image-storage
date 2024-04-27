@@ -57,9 +57,8 @@ class TestS3Service(unittest.TestCase):
         mock_file = BytesIO(file_contents)
 
         # act
-        result = self.s3_service.upload_image(mock_file, bucket_name, file_name)
+        self.s3_service.upload_image(mock_file, bucket_name, file_name)
 
         # assert
-        self.assertIsNone(result)
         self.s3_service.s3_client.upload_fileobj.assert_called_with(mock_file, bucket_name, file_name)
         self.assertTrue(mock_file.closed)

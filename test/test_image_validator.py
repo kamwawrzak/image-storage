@@ -1,7 +1,4 @@
 import unittest
-import imghdr
-from fastapi import UploadFile
-from unittest.mock import MagicMock
 from app.validator.image_validator import ImageValidator
 from app.exceptions import ValidationError
 from .fake_config import FakeConfig
