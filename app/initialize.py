@@ -15,13 +15,14 @@ def initialize(log: Logger, config: Config) -> ImageRouter:
     auth_service = AuthService(config)
     validator = ImageValidator(config)
     img_service = ImageService(repository, s3_service, config.aws_host)
-    
+
     return ImageRouter(log, auth_service, validator, img_service)
 
 def get_dsn(config: Config, driver: str) -> str:
-        user = config.db_user
-        password = config.db_password
-        host = config.db_host
-        port = config.db_port
-        database = config.db_database
-        return f"{driver}://{user}:{password}@{host}:{port}/{database}"
+    user = config.db_user
+    password = config.db_password
+    host = config.db_host
+    port = config.db_port
+    database = config.db_database
+
+    return f"{driver}://{user}:{password}@{host}:{port}/{database}"

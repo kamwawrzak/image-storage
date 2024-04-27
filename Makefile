@@ -26,3 +26,23 @@ test-coverage-html: test-coverage
 .PHONY: run-tests
 run-tests:
 	python -m unittest discover -v
+
+.PHONY: start-localstack
+start-localstack:
+	 localstack start -d --network localstack_network
+
+.PHONY: docker-build
+docker-build:
+	docker build -t image-storage:latest .
+
+.PHONY: docker-run
+docker-run:
+	docker-compose up -db
+
+.PHONY: docker-stop
+docker-stop:
+	docker-compose down
+
+.PHONY: lint
+lint:
+	pylint app/

@@ -23,4 +23,3 @@ class RecordAlreadyExistsError(DetailedException):
 
 class NotFoundError(Exception):
     pass
-
