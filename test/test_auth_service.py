@@ -3,13 +3,13 @@ import unittest
 from unittest.mock import MagicMock
 from app.service.auth_service import AuthService
 from app.exceptions import AuthenticationError
-
+from .fake_config import FakeConfig
 
 class TestAuthService(unittest.TestCase):
 
     def setUp(self):
-        self.config = TestAuthConfig()
-        self.auth_service = AuthService(config=TestAuthConfig)
+        self.config = FakeConfig()
+        self.auth_service = AuthService(config=FakeConfig)
 
     def test_get_current_user_success(self):
         # arrange
@@ -50,7 +50,3 @@ class TestAuthService(unittest.TestCase):
 
         # assert
         self.assertEqual(str(context.exception), "Invalid JWT")
-
-class TestAuthConfig:
-    jwt_secret="secret-123"
-    jwt_alg="HS256"

@@ -37,7 +37,7 @@ class S3Service:
     def list_buckets(self) -> List[str]:
         try: 
             resp = self.s3_client.list_buckets()
-            return resp["Buckets"]
+            return [buck["Name"] for buck in resp["Buckets"]]
         except ClientError as e:
             raise S3ClientError(e)
     
