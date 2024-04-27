@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  image-storage:
+    image: image-storage:latest
+    container_name: image-storage
+    ports:
+      - "8080:8080"
+    environment:
+      AWS_HOST: http://localstack:4566
+      DB_HOST: host.docker.internal
+    networks:
+      - localstack_network
+      - image_storage_network
+  localstack:
+    image: localstack/localstack:latest
+    container_name: localstack
+    ports:
+      - "4566:4566"  
+    environment:
+      SERVICES: "s3"  
+    networks:
+      - localstack_network
+
+networks:
+  localstack_network:
+  image_storage_network:
