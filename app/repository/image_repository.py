@@ -16,7 +16,7 @@ class ImageRepository:
 
     def get_session(self):
         return self.session()
-    
+
     def insert_image(self, user_id: str, name: str) -> Image:
         session = self.get_session()
         img = Image(user_id=user_id, img_name=name)
@@ -31,12 +31,12 @@ class ImageRepository:
         finally:
             session.close()
 
-    def get_image(self, user_id: str, id: str) -> Image:
+    def get_image(self, user_id: str, img_id: str) -> Image:
         session = self.get_session()
         try:
-            return session.query(Image).filter_by(user_id=user_id, id=id).one()
+            return session.query(Image).filter_by(user_id=user_id, id=img_id).one()
         except NoResultFound:
-            self.log.info(f"Image id: '{id}' doesn't exist")
+            self.log.info(f"Image id: '{img_id}' doesn't exist")
             raise NotFoundError
         finally:
             session.close()

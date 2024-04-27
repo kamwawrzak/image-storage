@@ -1,7 +1,7 @@
-import boto3
 from logging import Logger
-from botocore.exceptions import ClientError
 from typing import BinaryIO, List
+import boto3
+from botocore.exceptions import ClientError
 from ..config import Config
 from ..exceptions import S3ClientError
 
@@ -23,7 +23,7 @@ class S3Service:
             self.log.debug(f"Bucket '{name}' created")
         except ClientError as e:
             raise S3ClientError(e)
-    
+
     def upload_image(self, file: BinaryIO, bucket: str, name: str):
         try:
             file.seek(0)
@@ -35,12 +35,12 @@ class S3Service:
             file.close()
 
     def list_buckets(self) -> List[str]:
-        try: 
+        try:
             resp = self.s3_client.list_buckets()
             return [buck["Name"] for buck in resp["Buckets"]]
         except ClientError as e:
             raise S3ClientError(e)
-    
+
     def bucket_exists(self, bucket: str) -> bool:
         buckets = self.list_buckets()
-        return True if bucket in buckets else False
+        return bucket in buckets

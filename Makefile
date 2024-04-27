@@ -42,3 +42,7 @@ docker-run:
 .PHONY: docker-stop
 docker-stop:
 	docker-compose down
+
+.PHONY: lint
+lint:
+	pylint app/

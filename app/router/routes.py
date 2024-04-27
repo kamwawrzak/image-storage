@@ -1,20 +1,22 @@
+from logging import Logger
 from fastapi import APIRouter, File, Request, status, UploadFile
 from fastapi.responses import JSONResponse
-from logging import Logger
 from ..service.image_service import ImageService
 from ..service.auth_service import AuthService
 from ..validator.image_validator import ImageValidator
-from ..exceptions import AuthenticationError, NotFoundError, RecordAlreadyExistsError, S3ClientError, ValidationError
+from ..exceptions import AuthenticationError, NotFoundError, RecordAlreadyExistsError, \
+    S3ClientError, ValidationError
 
 
 class ImageRouter(APIRouter):
 
-    def __init__(self, 
-            log: Logger, 
-            auth: AuthService, 
-            validator: ImageValidator, 
-            imgSvc: ImageService, 
-            *args, **kwargs
+    def __init__(self,
+            log: Logger,
+            auth: AuthService,
+            validator: ImageValidator,
+            imgSvc: ImageService,
+            *args,
+            **kwargs
     ):
         super().__init__(*args, **kwargs)
         self.log = log
@@ -46,7 +48,7 @@ class ImageRouter(APIRouter):
             except RecordAlreadyExistsError:
                 self.log.error(e)
                 return JSONResponse(
-                    status=status.HTTP_409_CONFLICT,
+                    status_code=status.HTTP_409_CONFLICT,
                     content={"errors": "record already exists"}
                 )
             except S3ClientError as e:
@@ -55,13 +57,13 @@ class ImageRouter(APIRouter):
                     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                     content={"errors": "unexpected error occurred"}
                 )
-        
 
-        @self.get("/image/{id}")
-        async def get_image(req: Request, id: str):
+
+        @self.get("/image/{img_id}")
+        async def get_image(req: Request, img_id: str):
             try:
                 user_id = self.auth_service.get_current_user(req)
-                img = self.image_service.get_image(user_id, id)
+                img = self.image_service.get_image(user_id, img_id)
                 return JSONResponse(
                     status_code=status.HTTP_200_OK,
                     content={"image_path": img}

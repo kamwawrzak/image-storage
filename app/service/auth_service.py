@@ -14,7 +14,7 @@ class AuthService:
         header = req.headers.get('Authorization')
         if not header or not header.startswith('Bearer '):
             raise AuthenticationError('Missing JWT')
-    
+
         token = header.split(" ")[1]
         try:
             data = jwt.decode(
@@ -23,5 +23,5 @@ class AuthService:
                 algorithms=[self.alg]
             )
             return data['sub']
-        except jwt.exceptions.InvalidTokenError:
-            raise AuthenticationError('Invalid JWT')
+        except jwt.exceptions.InvalidTokenError as exc:
+            raise AuthenticationError('Invalid JWT') from exc

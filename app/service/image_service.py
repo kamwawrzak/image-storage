@@ -18,17 +18,17 @@ class ImageService:
             self.s3_service.create_bucket(user_id)
 
         self.s3_service.upload_image(file.file, user_id, name)
-        
+
         return self.repository.insert_image(user_id, name)
 
-    def get_image(self, user_id: str, id: str) -> str:
-        img = self.repository.get_image(user_id, id)
+    def get_image(self, user_id: str, img_id: str) -> str:
+        img = self.repository.get_image(user_id, img_id)
         return self.get_image_path(img)
-    
+
     def get_image_name(self, file: UploadFile):
         ext = self.get_extension(file)
         return f'image_{int(time.time())}.{ext}'
-    
+
     def get_extension(self, file: UploadFile) -> str:
         return file.filename.split('.')[-1]
 
