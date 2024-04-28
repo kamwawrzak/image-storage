@@ -3,10 +3,10 @@
 ## Run locally
 Requirements: `python3`, `docker` and `pip` package manager
 1. Run localstack for imitate AWS service: [docs](https://docs.localstack.cloud/getting-started/quickstart/)
-2. Run database `make -C db start-db`
-3. Run database migrations: TBD
-4. Setup venv `make setup-venv`
-5. Install dependencies `make install-deps`
+2. Setup venv `make setup-venv`
+3. Install dependencies `make install-deps`
+4. Run database `make -C db start-db`
+5. Run database migrations: `make -C db apply-migrations`
 6. Start server `make run-server`
 
 **Example queries**
