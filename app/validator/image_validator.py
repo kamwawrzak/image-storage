@@ -1,5 +1,6 @@
-import imghdr
+import io
 from fastapi import UploadFile
+from PIL import Image
 from ..config import Config
 from ..exceptions import ValidationError
 
@@ -19,6 +20,8 @@ class ImageValidator:
         if not file.content_type.startswith(self.content_type):
             raise ValidationError("File is not image")
 
-        file_contents = await file.read()
-        if imghdr.what(None, file_contents) not in self.allowed_extensions:
+        img_data = await file.read()
+        image = Image.open(io.BytesIO(img_data))
+        print("tyyype: ", image.format)
+        if image.format.lower() not in self.allowed_extensions:
             raise ValidationError("Unsupported image type")

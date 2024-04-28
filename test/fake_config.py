@@ -2,7 +2,7 @@ class FakeConfig:
     jwt_secret = "fake-jwt-secret"
     log_level = "debug"
     max_image_size_mb = 1
-    allowed_extensions = ["jpg"]
+    allowed_extensions = ["jpeg"]
     server_port = 6789
     db_host = "localhost"
     db_port = 5432

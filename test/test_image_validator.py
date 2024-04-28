@@ -12,7 +12,7 @@ class TestImageValidator(unittest.IsolatedAsyncioTestCase):
 
     async def test_validate_success(self):
         # arrange
-        file_mock = generate_mock_file(1024, "image/jpg", "jpg")
+        file_mock = generate_mock_file(1024, "image/jpeg", "jpeg")
 
         # act
         result = await self.validator.validate(file_mock)
@@ -22,7 +22,7 @@ class TestImageValidator(unittest.IsolatedAsyncioTestCase):
     
     async def test_validate_too_large_size(self):
         # arrange
-        file_mock = generate_mock_file(10* 1024 * 1024, "image/jpg", "jpg")
+        file_mock = generate_mock_file(10* 1024 * 1024, "image/jpeg", "jpeg")
         expectedErr = "File size exceeded"
 
         # act
@@ -34,7 +34,7 @@ class TestImageValidator(unittest.IsolatedAsyncioTestCase):
     
     async def test_validate_not_image_content(self):
         # arrange
-        file_mock = generate_mock_file(1024, "application/json", "jpg")
+        file_mock = generate_mock_file(1024, "application/json", "jpeg")
         expectedErr = "File is not image"
 
         # act
