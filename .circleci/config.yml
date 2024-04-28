@@ -1,0 +1,40 @@
+version: 2.1
+
+jobs:
+  lint:
+    docker:
+      - image: cimg/python:3.12
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            pip install --upgrade pip
+            make install-deps
+      - run:
+          name: Run lint
+          command: |
+            make lint
+  test:
+    docker:
+      - image: cimg/python:3.12
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            pip install --upgrade pip
+            make install-deps
+      - run:
+          name: Run tests
+          command: |
+            make run-tests
+
+workflows:
+  version: 2
+  tests:
+    jobs:
+      - lint
+      - test:
+          requires:
+            - lint
