@@ -37,7 +37,7 @@ docker-build:
 
 .PHONY: docker-run
 docker-run:
-	docker-compose up -db
+	docker-compose up -d
 
 .PHONY: docker-stop
 docker-stop:
