@@ -1,14 +1,14 @@
 import unittest
 from io import BytesIO 
 from unittest.mock import MagicMock
-from .fake_config import FakeConfig
+from .fake_config import FakeAWSCfg
 from app.service.s3_service import S3Service
 
 class TestS3Service(unittest.TestCase):
 
     def setUp(self):
         self.logger = MagicMock()
-        self.s3_service = S3Service(self.logger, FakeConfig())
+        self.s3_service = S3Service(self.logger, FakeAWSCfg())
         self.s3_service.s3_client = MagicMock()
     
     def test_create_bucket_success(self):

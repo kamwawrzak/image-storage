@@ -1,14 +1,14 @@
 import jwt
 from fastapi import Request
-from ..config import Config
+from ..config import JWTConfig
 from ..exceptions import AuthenticationError
 
 
 class AuthService:
 
-    def __init__(self, config: Config):
-        self.secret = config.jwt_secret
-        self.alg = config.jwt_alg
+    def __init__(self, config: JWTConfig):
+        self.secret = config.secret
+        self.alg = config.alg
 
     def get_current_user(self, req: Request) -> str:
         header = req.headers.get('Authorization')

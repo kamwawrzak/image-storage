@@ -1,14 +1,14 @@
 import unittest
 from app.validator.image_validator import ImageValidator
 from app.exceptions import ValidationError
-from .fake_config import FakeConfig
+from .fake_config import FakeImageServiceCfg
 from .helpers import generate_mock_file
 
 
 class TestImageValidator(unittest.IsolatedAsyncioTestCase):
 
     def setUp(self):
-        self.validator = ImageValidator(FakeConfig())
+        self.validator = ImageValidator(FakeImageServiceCfg())
 
     async def test_validate_success(self):
         # arrange

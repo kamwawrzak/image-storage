@@ -13,4 +13,4 @@ if __name__ == "__main__":
     router = initialize(log, config)
     app = FastAPI()
     app.include_router(router, prefix="/v1")
-    uvicorn.run(uvicorn.run(app, host='0.0.0.0', port=config.server_port))
+    uvicorn.run(uvicorn.run(app, host='0.0.0.0', port=config.server.port))
