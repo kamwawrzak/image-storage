@@ -2,19 +2,19 @@ from logging import Logger
 from typing import BinaryIO, List
 import boto3
 from botocore.exceptions import ClientError
-from ..config import Config
+from ..config import AWSConfig
 from ..exceptions import S3ClientError
 
 class S3Service:
 
-    def __init__(self, log: Logger, config: Config):
+    def __init__(self, log: Logger, config: AWSConfig):
         self.log = log
         self.s3_client = boto3.client(
             "s3",
-            endpoint_url = config.aws_host,
-            aws_access_key_id = config.aws_key_id,
-            aws_secret_access_key = config.aws_access_key,
-            region_name=config.aws_region
+            endpoint_url = config.host,
+            aws_access_key_id = config.access_key_id,
+            aws_secret_access_key = config.secret_access_key,
+            region_name=config.region
         )
 
     def create_bucket(self, name: str):

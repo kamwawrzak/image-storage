@@ -22,6 +22,5 @@ class ImageValidator:
 
         img_data = await file.read()
         image = Image.open(io.BytesIO(img_data))
-        print("tyyype: ", image.format)
         if image.format.lower() not in self.allowed_extensions:
             raise ValidationError("Unsupported image type")
