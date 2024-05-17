@@ -24,7 +24,7 @@ class ImageRouter(APIRouter):
         self.auth_service = auth
         self.image_validator = validator
 
-        @self.post("/image", )
+        @self.post("/images", )
         async def upload(req: Request, file: UploadFile = File(...)):
             try:
                 user_id = self.auth_service.get_current_user(req)
@@ -59,7 +59,7 @@ class ImageRouter(APIRouter):
                 )
 
 
-        @self.get("/image/{img_id}")
+        @self.get("/images/{img_id}")
         async def get_image(req: Request, img_id: str):
             try:
                 user_id = self.auth_service.get_current_user(req)
